@@ -65,5 +65,34 @@
   
   
   
+  <entry>
+    <title>Bat Learning 01</title>
+    <link href="/BatLearning01/"/>
+    <url>/BatLearning01/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Popd-x2F-Pushd"><a href="#Popd-x2F-Pushd" class="headerlink" title="Popd&#x2F;Pushd"></a>Popd&#x2F;Pushd</h2><p>These two commands are usually used to <strong>change the directoy</strong>.</p><ul><li><p>Pushd</p><ul><li>Move to a certain directory, and store the current directory at the <strong>top</strong> of a stack.</li></ul></li><li><p>Popd</p><ul><li>Read the directory from the stack, move to it, and then delete the directory from the stack.</li></ul></li></ul><p>The <strong>first time</strong> using Pushd, the current directory would be stored at the bottom of the stack since the stack is empty. If the command is used agian, another directory would be stored on top of the first directory.</p><p>Example:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">@<span class="hljs-built_in">echo</span> off<br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Intel\Logs <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Download <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\WINDOWS <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>%<br></code></pre></td></tr></table></figure><p>Result:</p><img src="/BatLearning01/dirResult.png" class="" title="Running Result"><hr><h2 id="Return-Value"><a href="#Return-Value" class="headerlink" title="Return Value"></a>Return Value</h2><p>If we want to get the return value of a command and store it in a variable, usually we use the following command:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> /f <span class="hljs-string">&quot;delims=&quot;</span> %%returnvalue <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;command&#x27;</span>) <span class="hljs-keyword">do</span> <span class="hljs-built_in">set</span> variable=%%returnvalue<br></code></pre></td></tr></table></figure><p><em><strong>command</strong></em> represent the command which we want to get return value from. <em><strong>variable</strong></em> is where we store the return value. <em><strong>returnvalue</strong></em> would be ultimately set to the return value of this command.</p><p>To retrieve the value, we could use the following command:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">%variable%<br></code></pre></td></tr></table></figure><p>Example:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">pushd</span> C:<br><span class="hljs-built_in">cd</span> Program Files (x86)\Microsoft Visual Studio\Installer<br><span class="hljs-keyword">for</span> /f <span class="hljs-string">&quot;delims=&quot;</span> %%t <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;vswhere.exe -property catalog_productLineVersion&#x27;</span>) <span class="hljs-keyword">do</span> <span class="hljs-built_in">set</span> version=%%t<br><span class="hljs-built_in">popd</span><br><span class="hljs-built_in">cd</span> ..\<br>call Lib\premake5\Premake5.exe vs%version%<br>PAUSE<br></code></pre></td></tr></table></figure><p>Result:</p><img src="/BatLearning01/ReturnResult.png" class="" title="Running Result">]]></content>
+    
+    
+    <categories>
+      
+      <category>Bash Notes</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Original</tag>
+      
+      <tag>Bash</tag>
+      
+      <tag>Windows</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
   
 </search>
