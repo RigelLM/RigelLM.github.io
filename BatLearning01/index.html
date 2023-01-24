@@ -25,8 +25,8 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://rigel.github.io/BatLearning01/dirResult.png">
 <meta property="og:image" content="https://rigel.github.io/BatLearning01/ReturnResult.png">
-<meta property="article:published_time" content="2022-07-17T20:29:02.000Z">
-<meta property="article:modified_time" content="2023-01-23T22:06:05.033Z">
+<meta property="article:published_time" content="2022-07-31T20:29:02.000Z">
+<meta property="article:modified_time" content="2023-01-24T02:04:21.012Z">
 <meta property="article:author" content="Rigel">
 <meta property="article:tag" content="Original">
 <meta property="article:tag" content="Bash">
@@ -230,8 +230,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-17 16:29" pubdate>
-          July 17, 2022 pm
+        <time datetime="2022-07-31 16:29" pubdate>
+          July 31, 2022 pm
         </time>
       </span>
     
@@ -317,7 +317,7 @@
 </ul>
 </li>
 </ul>
-<p>The <strong>first time</strong> using Pushd, the current directory would be stored at the bottom of the stack since the stack is empty. If the command is used agian, another directory would be stored on top of the first directory.</p>
+<p>The <strong>first time</strong> using Pushd, the current directory would be stored at the bottom of the stack since the stack is empty. If the command is used again, another directory would be stored on top of the first directory.</p>
 <p>Example:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">@<span class="hljs-built_in">echo</span> off<br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Intel\Logs <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Download <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\WINDOWS <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>%<br></code></pre></td></tr></table></figure>
 
@@ -328,7 +328,7 @@
 <h2 id="Return-Value"><a href="#Return-Value" class="headerlink" title="Return Value"></a>Return Value</h2><p>If we want to get the return value of a command and store it in a variable, usually we use the following command:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> /f <span class="hljs-string">&quot;delims=&quot;</span> %%returnvalue <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;command&#x27;</span>) <span class="hljs-keyword">do</span> <span class="hljs-built_in">set</span> variable=%%returnvalue<br></code></pre></td></tr></table></figure>
 
-<p><em><strong>command</strong></em> represent the command which we want to get return value from. <em><strong>variable</strong></em> is where we store the return value. <em><strong>returnvalue</strong></em> would be ultimately set to the return value of this command.</p>
+<p><em><strong>command</strong></em> represents the command which we want to get the return value from. <em><strong>variable</strong></em> is where we store the return value. <em><strong>returnvalue</strong></em> would be ultimately set to the return value of this command.</p>
 <p>To retrieve the value, we could use the following command:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">%variable%<br></code></pre></td></tr></table></figure>
 
@@ -399,7 +399,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>July 17, 2022</div>
+          <div>July 31, 2022</div>
         </div>
       
       
@@ -431,15 +431,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/Preparation/" title="Illusion Engine 01 - Preparation">
+                      <a href="/EntryPoint/" title="Illusion Engine 02 - EntryPoint">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Illusion Engine 01 - Preparation</span>
+                        <span class="hidden-mobile">Illusion Engine 02 - EntryPoint</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/Preparation/" title="Illusion Engine 01 - Preparation">
+                        <span class="hidden-mobile">Illusion Engine 01 - Preparation</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
@@ -493,6 +499,12 @@
 
 
   
+
+
+  
+  
+
+
 
 
 
@@ -686,6 +698,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

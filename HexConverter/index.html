@@ -16,25 +16,28 @@
   <meta name="author" content="Rigel">
   <meta name="keywords" content="">
   
-    <meta name="description" content="A programming blog by Rigel">
+    <meta name="description" content="BackgroundWhen I use OpenGL to develop a game engine and write a renderer for it, I often encounter the need to write an independent shader file and store the glsl code in a text file. However, the fi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Illusion Engine 02 - EntryPoint">
-<meta property="og:url" content="https://rigel.github.io/EntryPoint/index.html">
+<meta property="og:title" content="Hex Converter">
+<meta property="og:url" content="https://rigel.github.io/HexConverter/index.html">
 <meta property="og:site_name" content="Rigel Blog">
-<meta property="og:description" content="A programming blog by Rigel">
+<meta property="og:description" content="BackgroundWhen I use OpenGL to develop a game engine and write a renderer for it, I often encounter the need to write an independent shader file and store the glsl code in a text file. However, the fi">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-07-31T23:03:52.000Z">
-<meta property="article:modified_time" content="2023-01-24T02:04:01.879Z">
+<meta property="og:image" content="https://rigel.github.io/HexConverter/Result1.png">
+<meta property="og:image" content="https://rigel.github.io/HexConverter/Result2.png">
+<meta property="article:published_time" content="2022-07-24T01:02:23.000Z">
+<meta property="article:modified_time" content="2023-01-24T04:33:21.970Z">
 <meta property="article:author" content="Rigel">
-<meta property="article:tag" content="Original">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="Game Development">
-<meta property="article:tag" content="Computer Graphics">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="Skill">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rigel.github.io/HexConverter/Result1.png">
   
   
   
-  <title>Illusion Engine 02 - EntryPoint - Rigel Blog</title>
+  <title>Hex Converter - Rigel Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -217,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Illusion Engine 02 - EntryPoint"></span>
+            <span id="subtitle" data-typed-text="Hex Converter"></span>
           
         </div>
 
@@ -228,8 +231,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-31 19:03" pubdate>
-          July 31, 2022 pm
+        <time datetime="2022-07-23 21:02" pubdate>
+          July 23, 2022 pm
         </time>
       </span>
     
@@ -240,7 +243,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 words
+          3.6k words
         
       </span>
     
@@ -251,7 +254,7 @@
         
         
         
-          1 mins
+          11 mins
         
       </span>
     
@@ -297,12 +300,92 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Illusion Engine 02 - EntryPoint</h1>
+            <h1 style="display: none">Hex Converter</h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>When I use OpenGL to develop a game engine and write a renderer for it, I often encounter the need to write an independent shader file and store the glsl code in a <strong>text file</strong>.</p>
+<p>However, the file in text format is <strong>slow to read</strong>, and the file size is <strong>relatively large</strong> (even after zip compression), and at the same time, to encapsulate the shader and hide it from the engine user, I need to design a binary file format myself, and write unique IO system for it.</p>
+<p>In this context, the conversion between binary and decimal is particularly important. To understand the conversion between bases, I tried to use the least code to write a converter within 36 bases.</p>
+<hr>
+<h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><p>The main idea is to <em>firstly convert the input number to a <strong>decimal number</strong></em>. And then, convert the decimal number into the desired number.</p>
+<p>The implementation looks like this:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">void</span> <span class="hljs-title function_">HexConverter</span><span class="hljs-params">(<span class="hljs-type">char</span>* in, <span class="hljs-type">int</span> s_in, <span class="hljs-type">char</span>* out, <span class="hljs-type">int</span> s_out)</span><br>&#123;<br>    <span class="hljs-type">int</span> v = <span class="hljs-number">0</span>, n;<br>    <span class="hljs-comment">// Convert the input into a decimal number</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">char</span>* p = in; *p; p++)<br>        v = v * s_in + (*p - (( *p &gt;= <span class="hljs-string">&#x27;a&#x27;</span> ) ? (<span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-number">10</span>) : <span class="hljs-string">&#x27;0&#x27;</span>));<br>    <span class="hljs-comment">// Convert the decimal number to s_out based number</span><br>    <span class="hljs-keyword">for</span>(n = <span class="hljs-number">31</span>; v &amp;&amp; n; v = v / s_out)<br>        out[n--] = (((v % s_out) &lt; <span class="hljs-number">10</span>) ? <span class="hljs-string">&#x27;0&#x27;</span> : (<span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-number">10</span>)) + (v % s_out);<br>    <span class="hljs-comment">// Copy the answer to output array</span><br>    memmove(out, out + n + <span class="hljs-number">1</span>, <span class="hljs-number">32</span> - n - <span class="hljs-number">1</span>);<br>    <span class="hljs-comment">// Cut the output array</span><br>    out[<span class="hljs-number">32</span> - n - <span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>The converter falls into two parts:</p>
+<ol>
+<li>First part</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">// Convert the input into a decimal number</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">char</span>* p = in; *p; p++)<br>    v = v * s_in + (*p - (( *p &gt;= <span class="hljs-string">&#x27;a&#x27;</span> ) ? (<span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-number">10</span>) : <span class="hljs-string">&#x27;0&#x27;</span>));<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>The first for-loop is used to conevrt the input into a decimal number.<ul>
+<li>*p represents the number on each digit of the input number.</li>
+<li>Use *p as the conditon statement, so that the loop won’t stop until p points to ‘\0’ which equals to false and also represents the end of the array.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C">v = v * s_in + (*p - (( *p &gt;= <span class="hljs-string">&#x27;a&#x27;</span> ) ? (<span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-number">10</span>) : <span class="hljs-string">&#x27;0&#x27;</span>));<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>This line is where math actually gets in.<ul>
+<li>(( *p &gt;&#x3D; ‘a’ ) ? (‘a’ - 10) : ‘0’) figures out whether the digit is a charater.<ul>
+<li>If it is, this part would return <strong>‘a’ - 10</strong>. Then the right part of this code would turn into : *p - ‘a’ + 10.</li>
+<li>If it isn’t, this part would return <strong>‘0’</strong>. Then the right part of this code would turn into : *p - ‘0’.</li>
+<li>By doing so, the digit is converted to a decimal number. (0123456789abcdef is the sequence of the digits)</li>
+</ul>
+</li>
+<li>This line could be simplified as: <em><strong>v &#x3D; v * s_in + decimal format of current digit</strong></em>.<ul>
+<li>After the iteration, this line endd up like: <em><strong>v &#x3D; (…((v * s + d) * s + d) * s + d) * s … + d</strong></em>.</li>
+<li>s_ins in each layer are cumulative, they would add up and become <em><strong>$\sum_{i&#x3D;1}^{n} v_is^{n+1-i}$</strong></em>. And this is exactly the representation of s-based number in decimal.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>Second Part</li>
+</ol>
+<ul>
+<li>The algorithm follows the steps listed below:<ol>
+<li>Divide the decimal number by s_out.</li>
+<li>Write down the remainder (<strong>in desired base</strong>).</li>
+<li>Divide the result again by s_out.</li>
+<li>Repeat step 2 and 3 until result is 0.</li>
+<li>The result is the digit sequence of the remainders <strong>from the last to first</strong>.</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">// Convert the decimal number to s_out based number</span><br><span class="hljs-keyword">for</span>(n = <span class="hljs-number">31</span>; v &amp;&amp; n; v = v / s_out)<br>    out[n--] = (((v % s_out) &lt; <span class="hljs-number">10</span>) ? <span class="hljs-string">&#x27;0&#x27;</span> : (<span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-number">10</span>)) + (v % s_out);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>The second for-loop is used to convert the decimal number into desired base.<ul>
+<li>n is the iteration index. Since the <strong>upper bound of int is $2^{32}$</strong>, the output array cannot be longer than 32. (index range: 0-31)</li>
+<li>v &amp;&amp; n make sure the converter won’t convert numbers bigger than $2^{32}$. n would be out of range is input is bigger than $2^{32}$.</li>
+<li>v &#x3D; v &#x2F; s_out represents step 1</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C">out[n--] = (((v % s_out) &lt; <span class="hljs-number">10</span>) ? <span class="hljs-string">&#x27;0&#x27;</span> : (<span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-number">10</span>)) + (v % s_out);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>n– represents “digit sequence from the last to first”.</li>
+<li>v % s_out is the remainder, &lt; 10 checks whether it would be a character.<ul>
+<li>If it would, returns ‘a’ - 10 and add it with the reminder to convert it.</li>
+<li>If it won’t, returns ‘0’ and add it with the reminder so the number will not change, only <em><strong>the type would become char</strong></em>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Test Code:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">char</span> out[<span class="hljs-number">33</span>];<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> s = <span class="hljs-number">2</span>; s &lt; <span class="hljs-number">36</span>; s++)<br>    &#123;<br>        HexConverter(<span class="hljs-string">&quot;abc123&quot;</span>, <span class="hljs-number">16</span>, out, s);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;16:abc123 =&gt; %2d:%s\n&quot;</span>, s, out);<br>    &#125;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> s = <span class="hljs-number">2</span>; s &lt; <span class="hljs-number">36</span>; s++)<br>    &#123;<br>        HexConverter(<span class="hljs-string">&quot;114514&quot;</span>, <span class="hljs-number">10</span>, out, s);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;10:114514 =&gt; %2d:%s\n&quot;</span>, s, out);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Test Result:</p>
+<img src="/HexConverter/Result1.png" srcset="/img/loading.gif" lazyload class="" title="Test Results">
+
+<img src="/HexConverter/Result2.png" srcset="/img/loading.gif" lazyload class="" title="Test Results">
+
                 
               </div>
             
@@ -320,7 +403,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Game-Engine/" class="category-chain-item">Game Engine</a>
+  <a href="/categories/C-C-Notes/" class="category-chain-item">C/C++ Notes</a>
   
   
 
@@ -335,13 +418,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Original/">#Original</a>
+        <a href="/tags/C/">#C</a>
       
-        <a href="/tags/C/">#C++</a>
+        <a href="/tags/Skill/">#Skill</a>
       
-        <a href="/tags/Game-Development/">#Game Development</a>
+        <a href="/tags/Algorithm/">#Algorithm</a>
       
-        <a href="/tags/Computer-Graphics/">#Computer Graphics</a>
+        <a href="/tags/Math/">#Math</a>
       
     </div>
   
@@ -353,8 +436,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Illusion Engine 02 - EntryPoint</div>
-      <div>https://rigel.github.io/EntryPoint/</div>
+      <div>Hex Converter</div>
+      <div>https://rigel.github.io/HexConverter/</div>
     </div>
     <div class="license-meta">
       
@@ -366,7 +449,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>July 31, 2022</div>
+          <div>July 23, 2022</div>
         </div>
       
       
@@ -398,15 +481,15 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/Preparation/" title="Illusion Engine 01 - Preparation">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Illusion Engine 01 - Preparation</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/BatLearning01/" title="Bat Learning 01">
-                        <span class="hidden-mobile">Bat Learning 01</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>
