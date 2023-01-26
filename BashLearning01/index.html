@@ -18,25 +18,25 @@
   
     <meta name="description" content="Popd&#x2F;PushdThese two commands are usually used to change the directoy.  Pushd  Move to a certain directory, and store the current directory at the top of a stack.   Popd  Read the directory from t">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bat Learning 01">
-<meta property="og:url" content="https://rigel.github.io/BatLearning01/index.html">
+<meta property="og:title" content="Bash Learning 01">
+<meta property="og:url" content="https://rigel.github.io/BashLearning01/index.html">
 <meta property="og:site_name" content="Rigel Blog">
 <meta property="og:description" content="Popd&#x2F;PushdThese two commands are usually used to change the directoy.  Pushd  Move to a certain directory, and store the current directory at the top of a stack.   Popd  Read the directory from t">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://rigel.github.io/BatLearning01/dirResult.png">
-<meta property="og:image" content="https://rigel.github.io/BatLearning01/ReturnResult.png">
+<meta property="og:image" content="https://rigel.github.io/BashLearning01/dirResult.png">
+<meta property="og:image" content="https://rigel.github.io/BashLearning01/ReturnResult.png">
 <meta property="article:published_time" content="2022-07-31T20:29:02.000Z">
-<meta property="article:modified_time" content="2023-01-24T02:04:21.012Z">
+<meta property="article:modified_time" content="2023-01-26T00:44:01.718Z">
 <meta property="article:author" content="Rigel">
 <meta property="article:tag" content="Original">
 <meta property="article:tag" content="Bash">
 <meta property="article:tag" content="Windows">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://rigel.github.io/BatLearning01/dirResult.png">
+<meta name="twitter:image" content="https://rigel.github.io/BashLearning01/dirResult.png">
   
   
   
-  <title>Bat Learning 01 - Rigel Blog</title>
+  <title>Bash Learning 01 - Rigel Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +219,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Bat Learning 01"></span>
+            <span id="subtitle" data-typed-text="Bash Learning 01"></span>
           
         </div>
 
@@ -299,7 +299,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Bat Learning 01</h1>
+            <h1 style="display: none">Bash Learning 01</h1>
             
             
               <div class="markdown-body">
@@ -322,7 +322,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">@<span class="hljs-built_in">echo</span> off<br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Intel\Logs <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Download <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\WINDOWS <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>%<br></code></pre></td></tr></table></figure>
 
 <p>Result:</p>
-<img src="/BatLearning01/dirResult.png" srcset="/img/loading.gif" lazyload class="" title="Running Result">
+<img src="/BashLearning01/dirResult.png" srcset="/img/loading.gif" lazyload class="" title="Running Result">
 
 <hr>
 <h2 id="Return-Value"><a href="#Return-Value" class="headerlink" title="Return Value"></a>Return Value</h2><p>If we want to get the return value of a command and store it in a variable, usually we use the following command:</p>
@@ -336,7 +336,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">pushd</span> C:<br><span class="hljs-built_in">cd</span> Program Files (x86)\Microsoft Visual Studio\Installer<br><span class="hljs-keyword">for</span> /f <span class="hljs-string">&quot;delims=&quot;</span> %%t <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;vswhere.exe -property catalog_productLineVersion&#x27;</span>) <span class="hljs-keyword">do</span> <span class="hljs-built_in">set</span> version=%%t<br><span class="hljs-built_in">popd</span><br><span class="hljs-built_in">cd</span> ..\<br>call Lib\premake5\Premake5.exe vs%version%<br>PAUSE<br></code></pre></td></tr></table></figure>
 
 <p>Result:</p>
-<img src="/BatLearning01/ReturnResult.png" srcset="/img/loading.gif" lazyload class="" title="Running Result">
+<img src="/BashLearning01/ReturnResult.png" srcset="/img/loading.gif" lazyload class="" title="Running Result">
 
                 
               </div>
@@ -386,8 +386,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Bat Learning 01</div>
-      <div>https://rigel.github.io/BatLearning01/</div>
+      <div>Bash Learning 01</div>
+      <div>https://rigel.github.io/BashLearning01/</div>
     </div>
     <div class="license-meta">
       
