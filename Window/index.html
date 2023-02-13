@@ -1,0 +1,824 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Rigel.png">
+  <link rel="icon" href="/img/Rigel.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Rigel">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="In order to implement a window class, we decided to use a library called GLFW, which is usually used to create logic related to windows, events, KeyCode, and ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Illusion Engine 06 - Window">
+<meta property="og:url" content="https://rigel.github.io/Window/index.html">
+<meta property="og:site_name" content="Rigel Blog">
+<meta property="og:description" content="In order to implement a window class, we decided to use a library called GLFW, which is usually used to create logic related to windows, events, KeyCode, and ...">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-21T17:25:59.000Z">
+<meta property="article:modified_time" content="2023-02-13T20:50:18.087Z">
+<meta property="article:author" content="Rigel">
+<meta property="article:tag" content="Original">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Game Development">
+<meta property="article:tag" content="Computer Graphics">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Illusion Engine 06 - Window - Rigel Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"rigel.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZgzmD6Hm82vvDfnkCgGAcZhI-gzGzoHsz","app_key":"RPnpqTBjC8oNMLXr2F7RdvB2","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Rigel Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banner2.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Illusion Engine 06 - Window"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-21 13:25" pubdate>
+          August 21, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> times
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Illusion Engine 06 - Window</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the last article, we implemented the layer system. So in this article, we will create an actual window in the engine and talk about the role of layer system and event system.</p>
+<hr>
+<h2 id="Dependency"><a href="#Dependency" class="headerlink" title="Dependency"></a>Dependency</h2><p>In order to implement the a window class, we decided to use a library called <strong>GLFW</strong>, which is usually used to create logic related to windows, events, KeyCode, and the like.</p>
+<p>GLFW library has already been included in <em><strong>Illusion&#x2F;Lib&#x2F;GLFW…</strong></em> folder and configured in <strong>premake.lua</strong> file. (The configuration of third-party library is in article <a target="_blank" rel="noopener" href="https://rigellm.github.io/Preparation/">Preparation</a>)</p>
+<hr>
+<h2 id="Principle"><a href="#Principle" class="headerlink" title="Principle"></a>Principle</h2><p>The window itself should have the following properties:</p>
+<ul>
+<li>The length and width of itself and the corresponding get() methods;</li>
+<li>The Init() function that set up all the requirement for the window’s rendering;</li>
+<li>The functions about VSync since we want to control the engine’s performance;</li>
+</ul>
+<hr>
+<h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><p>In <em><strong>Illusion&#x2F;src&#x2F;Engine&#x2F;Core&#x2F;Window&#x2F;…</strong></em> folder, create two files: <em><strong>Window.h&#x2F;cpp</strong></em> and enter:</p>
+<h3 id="Window-h"><a href="#Window-h" class="headerlink" title="Window.h"></a>Window.h</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Core.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Event/Events.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;GLFW/glfw3.h&gt;</span></span><br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>	<span class="hljs-keyword">struct</span> <span class="hljs-title class_">WindowProps</span><br>	&#123;<br>		std::string Title;<br>		<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> Width;<br>		<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> Height;<br>		<span class="hljs-comment">// Constrctor for the struct WindowProps</span><br>		<span class="hljs-built_in">WindowProps</span>(<span class="hljs-type">const</span> std::string&amp; title = <span class="hljs-string">&quot;Illusion Engine&quot;</span>,<br>			<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> width = <span class="hljs-number">1280</span>,<br>			<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> height = <span class="hljs-number">720</span>)<br>			: <span class="hljs-built_in">Title</span>(title), <span class="hljs-built_in">Width</span>(width), <span class="hljs-built_in">Height</span>(height) &#123;&#125;<br>	&#125;;<br>	<span class="hljs-comment">// Window Class</span><br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">Window</span><br>	&#123;<br>	<span class="hljs-keyword">public</span>:<br>		<span class="hljs-comment">// Creating a template funtion</span><br>		<span class="hljs-comment">// Input: Event&amp;</span><br>		<span class="hljs-comment">// Output: void</span><br>		<span class="hljs-keyword">using</span> EventCallbackFn = std::function&lt;<span class="hljs-built_in">void</span>(Event&amp;)&gt;;<br>		<span class="hljs-built_in">Window</span>(<span class="hljs-type">const</span> WindowProps&amp; props = <span class="hljs-built_in">WindowProps</span>());<br>		~<span class="hljs-built_in">Window</span>();<br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OnUpdate</span><span class="hljs-params">()</span></span>;<br>		<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">GetWidth</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> m_Data.Width; &#125;<br>		<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">GetHeight</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> m_Data.Height; &#125;<br>		<span class="hljs-comment">// Set the overall event callback function</span><br>		<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">SetEventCallback</span><span class="hljs-params">(<span class="hljs-type">const</span> EventCallbackFn&amp; callback)</span> </span>&#123; m_Data.EventCallback = callback; &#125;<br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SetVSync</span><span class="hljs-params">(<span class="hljs-type">bool</span> enabled)</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">IsSync</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>		<span class="hljs-comment">// Expose the m_Window</span><br>		<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span>* <span class="hljs-title">GetNativeWindow</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> m_Window; &#125;<br>	<span class="hljs-keyword">private</span>:<br>		<span class="hljs-comment">// Initialize the window properties</span><br>		<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Init</span><span class="hljs-params">(<span class="hljs-type">const</span> WindowProps&amp; props)</span></span>;<br>		<span class="hljs-comment">// Shut the window down</span><br>		<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Shutdown</span><span class="hljs-params">()</span></span>;<br>	<span class="hljs-keyword">private</span>:<br>		GLFWwindow* m_Window;<br>		<span class="hljs-comment">// Store all the data that a window maintains</span><br>		<span class="hljs-keyword">struct</span> <span class="hljs-title class_">WindowData</span><br>		&#123;<br>			std::string Title;<br>			<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> Width, Height;<br>			<span class="hljs-type">bool</span> VSync;<br>			EventCallbackFn EventCallback;<br>		&#125;;<br>		WindowData m_Data;<br>	&#125;;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><em><strong>WindowProp</strong></em> is a struct that contains basic information of a window. It <strong>simplifies the initialization</strong> of the window;</li>
+<li>The window would have <em><strong>an EventCallback function</strong></em>. It will be bound to a function that processes all kinds of events in Application class. This functon would be called whenever there’s an event triggered.</li>
+<li><em><strong>GetNativeWindow()</strong></em> is a function that expose the glfwwindow pointer to other classes. It would be used in Input Class.</li>
+</ul>
+<h3 id="Window-cpp"><a href="#Window-cpp" class="headerlink" title="Window.cpp"></a>Window.cpp</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Window.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Event/AppEvent.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Event/MouseEvent.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Event/KeyEvent.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;glad/glad.h&gt;</span></span><br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>	<span class="hljs-comment">// Make sure GLFW has been initialized when it is called</span><br>	<span class="hljs-type">static</span> <span class="hljs-type">bool</span> s_GLFWInitialized = <span class="hljs-literal">false</span>;<br>	<span class="hljs-comment">// A simple Error processor</span><br>	<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">GLFWErrorCallback</span><span class="hljs-params">(<span class="hljs-type">int</span> error, <span class="hljs-type">const</span> <span class="hljs-type">char</span>* description)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-built_in">ENGINE_CORE_ERROR</span>(<span class="hljs-string">&quot;GLFW ERROR (&#123;0&#125;): &#123;1&#125;&quot;</span>, error, description);<br>	&#125;<br>	<span class="hljs-comment">//// Create the Window for the program</span><br>	<span class="hljs-comment">//Window* Window::CreateIllusionWindow(const WindowProps&amp; props)</span><br>	<span class="hljs-comment">//&#123;</span><br>	<span class="hljs-comment">//	return new Window(props);</span><br>	<span class="hljs-comment">//&#125;</span><br>	<span class="hljs-comment">// The constructor of the Window class</span><br>	<span class="hljs-comment">// Initialize the properties of the window</span><br>	Window::<span class="hljs-built_in">Window</span>(<span class="hljs-type">const</span> WindowProps&amp; props)<br>	&#123;<br>		<span class="hljs-built_in">Init</span>(props);<br>	&#125;<br>	<span class="hljs-comment">// The destructor of the Window class</span><br>	Window::~<span class="hljs-built_in">Window</span>()<br>	&#123;<br>		<span class="hljs-built_in">Shutdown</span>();<br>	&#125;<br>	<span class="hljs-comment">// Initialization of the properties of the window</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Window::Init</span><span class="hljs-params">(<span class="hljs-type">const</span> WindowProps&amp; props)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">// Unpack the data input</span><br>		<span class="hljs-comment">// Store all the data that window maintains</span><br>		m_Data.Title = props.Title;<br>		m_Data.Width = props.Width;<br>		m_Data.Height = props.Height;<br>		<span class="hljs-comment">// Log the data</span><br>		<span class="hljs-built_in">ENGINE_CORE_INFO</span>(<span class="hljs-string">&quot;Window Created: &#123;0&#125; (&#123;1&#125;,&#123;2&#125;)&quot;</span>, m_Data.Title, m_Data.Width, m_Data.Height);<br>		<span class="hljs-comment">// Initialize GLFW</span><br>		<span class="hljs-keyword">if</span> (!s_GLFWInitialized)<br>		&#123;<br>			<span class="hljs-type">int</span> success = <span class="hljs-built_in">glfwInit</span>();<br>			<span class="hljs-built_in">ILLUSION_CORE_ASSERT</span>(success, <span class="hljs-string">&quot;Could not intialize GLFW!&quot;</span>);<br>			<span class="hljs-comment">// Set up the error callback function</span><br>			<span class="hljs-built_in">glfwSetErrorCallback</span>(GLFWErrorCallback);<br>			s_GLFWInitialized = <span class="hljs-literal">true</span>;<br>		&#125;<br>		<span class="hljs-comment">// Create the window with the data that the window maintains</span><br>		m_Window = <span class="hljs-built_in">glfwCreateWindow</span>((<span class="hljs-type">int</span>)props.Width, (<span class="hljs-type">int</span>)props.Height, m_Data.Title.<span class="hljs-built_in">c_str</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-literal">nullptr</span>);<br>		<span class="hljs-comment">// Set up the graphic context</span><br>		<span class="hljs-built_in">glfwMakeContextCurrent</span>(m_Window);<br>		<span class="hljs-comment">// Check if glad has been initialized</span><br>		<span class="hljs-type">int</span> status = <span class="hljs-built_in">gladLoadGLLoader</span>((GLADloadproc)glfwGetProcAddress);<br>		<span class="hljs-built_in">ILLUSION_CORE_ASSERT</span>(status, <span class="hljs-string">&quot;Failed to initialize Glad!&quot;</span>);<br>		<span class="hljs-comment">// Log the OpenGL information to the console</span><br>		<span class="hljs-built_in">ENGINE_CORE_INFO</span>(<span class="hljs-string">&quot;OpenGL Info:&quot;</span>);<br>		<span class="hljs-built_in">ENGINE_CORE_INFO</span>(<span class="hljs-string">&quot;  Vendor\t: &#123;0&#125;&quot;</span>, <span class="hljs-built_in">glGetString</span>(GL_VENDOR));<br>		<span class="hljs-built_in">ENGINE_CORE_INFO</span>(<span class="hljs-string">&quot;  Renderer\t: &#123;0&#125;&quot;</span>, <span class="hljs-built_in">glGetString</span>(GL_RENDERER));<br>		<span class="hljs-built_in">ENGINE_CORE_INFO</span>(<span class="hljs-string">&quot;  Version\t: &#123;0&#125;&quot;</span>, <span class="hljs-built_in">glGetString</span>(GL_VERSION));<br>		<span class="hljs-comment">// The user pointer could be used to store whatever you what</span><br>		<span class="hljs-built_in">glfwSetWindowUserPointer</span>(m_Window, &amp;m_Data);<br>		<span class="hljs-built_in">SetVSync</span>(<span class="hljs-literal">true</span>);<br>		<span class="hljs-comment">// Set GLFW callbacks</span><br>		<span class="hljs-comment">// Use Lambda expressions that generate a callable funtion and set it to be the callback function</span><br>		<span class="hljs-built_in">glfwSetWindowSizeCallback</span>(m_Window, [](GLFWwindow* window, <span class="hljs-type">int</span> width, <span class="hljs-type">int</span> height)<br>		&#123;<br>			<span class="hljs-comment">// Retrieve the data that we stored in the user pointer</span><br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			<span class="hljs-comment">// Store the change</span><br>			data.Width = width;<br>			data.Height = height;<br>			WindowResizeEvent <span class="hljs-built_in">event</span>(width, height);<br>			data.<span class="hljs-built_in">EventCallback</span>(event);<br>		&#125;);<br>		<span class="hljs-built_in">glfwSetWindowCloseCallback</span>(m_Window, [](GLFWwindow* window)<br>		&#123;<br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			WindowCloseEvent event;<br>			data.<span class="hljs-built_in">EventCallback</span>(event);<br>		&#125;);<br>		<span class="hljs-built_in">glfwSetKeyCallback</span>(m_Window, [](GLFWwindow* window, <span class="hljs-type">int</span> key, <span class="hljs-type">int</span> scancode, <span class="hljs-type">int</span> action, <span class="hljs-type">int</span> mods)<br>		&#123;<br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			<span class="hljs-keyword">switch</span> (action)<br>			&#123;<br>				<span class="hljs-keyword">case</span> GLFW_PRESS:<br>				&#123;<br>					KeyPressedEvent <span class="hljs-built_in">event</span>(key, <span class="hljs-number">0</span>);<br>					data.<span class="hljs-built_in">EventCallback</span>(event);<br>					<span class="hljs-keyword">break</span>;<br>				&#125;<br>				<span class="hljs-keyword">case</span>  GLFW_RELEASE:<br>				&#123;<br>					KeyReleasedEvent <span class="hljs-built_in">event</span>(key);<br>					data.<span class="hljs-built_in">EventCallback</span>(event);<br>					<span class="hljs-keyword">break</span>;<br>				&#125;<br>				<span class="hljs-keyword">case</span> GLFW_REPEAT:<br>				&#123;<br>					KeyPressedEvent <span class="hljs-built_in">event</span>(key, <span class="hljs-number">1</span>);<br>					data.<span class="hljs-built_in">EventCallback</span>(event);<br>					<span class="hljs-keyword">break</span>;<br>				&#125;<br>			&#125;<br>		&#125;);<br>		<span class="hljs-built_in">glfwSetCharCallback</span>(m_Window, [](GLFWwindow* window, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> keycode)<br>		&#123;<br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			KeyTypedEvent <span class="hljs-built_in">event</span>(keycode);<br>			data.<span class="hljs-built_in">EventCallback</span>(event);<br>		&#125;);<br>		<span class="hljs-built_in">glfwSetMouseButtonCallback</span>(m_Window, [](GLFWwindow* window, <span class="hljs-type">int</span> button, <span class="hljs-type">int</span> action, <span class="hljs-type">int</span> mods)<br>		&#123;<br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			<span class="hljs-keyword">switch</span> (action)<br>			&#123;<br>				<span class="hljs-keyword">case</span> GLFW_PRESS:<br>				&#123;<br>					MouseButtonPressedEvent <span class="hljs-built_in">event</span>(button);<br>					data.<span class="hljs-built_in">EventCallback</span>(event);<br>					<span class="hljs-keyword">break</span>;<br>				&#125;<br>				<span class="hljs-keyword">case</span> GLFW_RELEASE:<br>				&#123;<br>					MouseButtonReleasedEvent <span class="hljs-built_in">event</span>(button);<br>					data.<span class="hljs-built_in">EventCallback</span>(event);<br>					<span class="hljs-keyword">break</span>;<br>				&#125;<br>			&#125;<br>		&#125;);<br>		<span class="hljs-built_in">glfwSetScrollCallback</span>(m_Window, [](GLFWwindow* window, <span class="hljs-type">double</span> xOffset, <span class="hljs-type">double</span> yOffset)<br>		&#123;<br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			MouseScrolledEvent <span class="hljs-built_in">event</span>((<span class="hljs-type">float</span>)xOffset, (<span class="hljs-type">float</span>)yOffset);<br>			data.<span class="hljs-built_in">EventCallback</span>(event);<br>		&#125;);<br>		<span class="hljs-built_in">glfwSetCursorPosCallback</span>(m_Window, [](GLFWwindow* window, <span class="hljs-type">double</span> xPos, <span class="hljs-type">double</span> yPos)<br>		&#123;<br>			WindowData&amp; data = *(WindowData*)<span class="hljs-built_in">glfwGetWindowUserPointer</span>(window);<br>			MouseMovedEvent <span class="hljs-built_in">event</span>((<span class="hljs-type">float</span>)xPos, (<span class="hljs-type">float</span>)yPos);<br>			data.<span class="hljs-built_in">EventCallback</span>(event);<br>		&#125;);<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Window::Shutdown</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-built_in">glfwDestroyWindow</span>(m_Window);<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Window::OnUpdate</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">// Everytime it is updataed, process the event in the queue</span><br>		<span class="hljs-built_in">glfwPollEvents</span>();<br>		<span class="hljs-comment">//m_Context-&gt;SwapBuffers();</span><br>		<span class="hljs-built_in">glfwSwapBuffers</span>(m_Window);<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Window::SetVSync</span><span class="hljs-params">(<span class="hljs-type">bool</span> enabled)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">if</span> (enabled)<br>			<span class="hljs-built_in">glfwSwapInterval</span>(<span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">else</span><br>			<span class="hljs-built_in">glfwSwapInterval</span>(<span class="hljs-number">0</span>);<br>		m_Data.VSync = enabled;<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Window::IsSync</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">return</span> m_Data.VSync;<br>	&#125;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><em><strong>GLFWErrorCallback()</strong></em> is a function that would be called when glfw is having trouble with the window;</li>
+<li>In the <em><strong>Init()</strong></em> function, the data passed in will be unpacked and used to initialize the window. Then, we initialize GLFW, glad, and graphic context;<ul>
+<li>The <em><strong>UserPointer</strong></em> is a void pointer that could be used to <strong>store whatever data we want</strong> and the data stored in it could be read by using <em><strong>glfwGetWindowUserPointer()</strong></em>. In this case, we use this pointer to store the window’s data, <em><strong>precisely the EventCallback function</strong></em>;</li>
+<li>For every <em><strong>glfwSet___Callback()</strong></em>, we pass in the current window and <em><strong>a lambda expression</strong></em>. These lambda expressions work like <strong>anonymous functions</strong>. The function would bind these them to the glfw callback functions. They would unpack the data stored in the UserPointer and take out the <em><strong>EventCallback function</strong></em> and call it;</li>
+<li>Here we bind all types of callback functions to corresponding lambda expressions, so that we can handle all types of events;</li>
+</ul>
+</li>
+<li><em><strong>OnUpdata()</strong></em> function is where we refresh the window and update the frame;</li>
+</ul>
+<hr>
+<h2 id="Utilization"><a href="#Utilization" class="headerlink" title="Utilization"></a>Utilization</h2><p>So far, we have implemented every thing that we need to render a window. Next step we have to revise the exsisting code in order to put these systems into use.</p>
+<h3 id="Engine-End"><a href="#Engine-End" class="headerlink" title="Engine End"></a>Engine End</h3><p>Firstly, we have to revise the code in Engine end:</p>
+<h4 id="Applicaton-h"><a href="#Applicaton-h" class="headerlink" title="Applicaton.h"></a>Applicaton.h</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Core.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Layer/LayerStack.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Event/Events.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Event/AppEvent.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Window/Window.h&quot;</span></span><br><span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span><br>	&#123;<br>	<span class="hljs-keyword">public</span>:<br>		<span class="hljs-built_in">Application</span>();<br>		<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Application</span>();<br>		<span class="hljs-comment">//The function where application actually starts</span><br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Run</span><span class="hljs-params">()</span></span>;<br>		<span class="hljs-comment">// Overall callback function</span><br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OnEvent</span><span class="hljs-params">(Event&amp; event)</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PushLayer</span><span class="hljs-params">(Layer* layer)</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PushOverlay</span><span class="hljs-params">(Layer* overlay)</span></span>;<br>		<span class="hljs-function"><span class="hljs-keyword">inline</span> Window&amp; <span class="hljs-title">GetWindow</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> *m_Window; &#125;;<br>		<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">static</span> Application&amp; <span class="hljs-title">Get</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> *s_Instance; &#125;;<br>	<span class="hljs-keyword">private</span>:<br>		<span class="hljs-comment">// Callback function that close the window</span><br>		<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">OnWindowClose</span><span class="hljs-params">(WindowCloseEvent&amp; event)</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">OnWindowResize</span><span class="hljs-params">(WindowResizeEvent&amp; event)</span></span>;<br>	<span class="hljs-keyword">private</span>:<br>		std::unique_ptr&lt;Window&gt; m_Window;<br>		<span class="hljs-type">bool</span> m_Running = <span class="hljs-literal">true</span>;<br>		<span class="hljs-type">bool</span> m_Minimized = <span class="hljs-literal">false</span>;<br>		LayerStack m_LayerStack;<br>	<span class="hljs-keyword">private</span>:<br>		<span class="hljs-type">static</span> Application* s_Instance;<br>	&#125;;<br>	<span class="hljs-comment">//The Creation function of the application</span><br>	<span class="hljs-comment">//Should be implement by the user themselves</span><br>	<span class="hljs-comment">//Since we don&#x27;t know what they will call their apps and what they will do with their apps</span><br>	<span class="hljs-comment">//There cannot be a uniform implementation of the creation function</span><br>	<span class="hljs-comment">//It is implemented in the Game.cpp</span><br>	<span class="hljs-function">Application* <span class="hljs-title">CreateApplication</span><span class="hljs-params">()</span></span>;<br><span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>OnEvent() function would be bound to the window’s EventCallback function. The function will be used to dispatch all the event to every layers and window itself;</li>
+<li>PushLayer() and PushOvelayer() are used to push layers into the layerstack;</li>
+<li>GetWindow() and Get() expose the window instance and application instance to other classes such as Input;</li>
+<li>OnWindowClose() and OnWindoResize() are callback functions that work with m_Running and m_Minimized to determine the status of the window and application;</li>
+</ul>
+<h4 id="Application-cpp"><a href="#Application-cpp" class="headerlink" title="Application.cpp"></a>Application.cpp</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Application.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Log/Log.h&quot;</span></span><br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>	Application* Application::s_Instance = <span class="hljs-literal">nullptr</span>;<br>	Application::<span class="hljs-built_in">Application</span>()<br>	&#123;<br>		<span class="hljs-built_in">ILLUSION_CORE_ASSERT</span>(!s_Instance, <span class="hljs-string">&quot;Application already exists!&quot;</span>);<br>		s_Instance = <span class="hljs-keyword">this</span>;<br>		<span class="hljs-comment">// Create a window</span><br>		m_Window.<span class="hljs-built_in">reset</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Window</span>());<br>		<span class="hljs-comment">// Bind OnEvent as a overall callback function glfw</span><br>		<span class="hljs-comment">// The program would call OnEvent whenever there&#x27;s an event</span><br>		m_Window-&gt;<span class="hljs-built_in">SetEventCallback</span>(<span class="hljs-built_in">ENGINE_BIND_EVENT_FN</span>(Application::OnEvent));<br>	&#125;<br>	Application::~<span class="hljs-built_in">Application</span>() &#123;&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Application::PushLayer</span><span class="hljs-params">(Layer* layer)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">// Push the layer into the layerstack and call it to do some prepare work</span><br>		m_LayerStack.<span class="hljs-built_in">PushLayer</span>(layer);<br>		layer-&gt;<span class="hljs-built_in">OnAttach</span>();<br>	&#125;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Application::PushOverlay</span><span class="hljs-params">(Layer* overlay)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">// Push the overlay layer into the layerstack and call it to do some prepare work</span><br>		m_LayerStack.<span class="hljs-built_in">PushOverlay</span>(overlay);<br>		overlay-&gt;<span class="hljs-built_in">OnAttach</span>();<br>	&#125;<br>	<span class="hljs-comment">// The overall callback function</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Application::OnEvent</span><span class="hljs-params">(Event&amp; event)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">// Create a dispatcher which is bound to event</span><br>		<span class="hljs-function">EventDispatcher <span class="hljs-title">dispatcher</span><span class="hljs-params">(event)</span></span>;<br>		<span class="hljs-comment">// If the event is OnWindowClose, the dispatcher would dispatch it and call the OnWindowClose function</span><br>		dispatcher.<span class="hljs-built_in">Dispatch</span>&lt;WindowCloseEvent&gt;(<span class="hljs-built_in">ENGINE_BIND_EVENT_FN</span>(Application::OnWindowClose));<br>		dispatcher.<span class="hljs-built_in">Dispatch</span>&lt;WindowResizeEvent&gt;(<span class="hljs-built_in">ENGINE_BIND_EVENT_FN</span>(Application::OnWindowResize));<br>		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> it = m_LayerStack.<span class="hljs-built_in">end</span>(); it != m_LayerStack.<span class="hljs-built_in">begin</span>();)<br>		&#123;<br>			(*(--it))-&gt;<span class="hljs-built_in">OnEvent</span>(event);<br>			<span class="hljs-keyword">if</span> (event.m_Handled)<br>				<span class="hljs-keyword">break</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">// The callback function to close the window</span><br>	<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Application::OnWindowClose</span><span class="hljs-params">(WindowCloseEvent&amp; event)</span></span><br><span class="hljs-function">	</span>&#123;<br>		m_Running = <span class="hljs-literal">false</span>;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>	&#125;<br>	<span class="hljs-comment">// The callback function to resize the window</span><br>	<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Application::OnWindowResize</span><span class="hljs-params">(WindowResizeEvent&amp; event)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">if</span> (event.<span class="hljs-built_in">GetWidth</span>() == <span class="hljs-number">0</span> || event.<span class="hljs-built_in">GetHeight</span>() == <span class="hljs-number">0</span>)<br>		&#123;<br>			m_Minimized = <span class="hljs-literal">true</span>;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>		&#125;<br>		m_Minimized = <span class="hljs-literal">false</span>;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>	&#125;<br>	<span class="hljs-comment">//The function where the app actually starts</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Application::Run</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">while</span> (m_Running)<br>		&#123;<br>			<span class="hljs-keyword">if</span> (!m_Minimized)<br>			&#123;<br>				<span class="hljs-comment">// Update Objects in the game base on the Layer order</span><br>				<span class="hljs-keyword">for</span> (Layer* layer : m_LayerStack)<br>					layer-&gt;<span class="hljs-built_in">OnUpdate</span>();<br>			&#125;<br>			<span class="hljs-comment">// Update everything</span><br>			m_Window-&gt;<span class="hljs-built_in">OnUpdate</span>();<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><em><strong>PushLayer()</strong></em> and <em><strong>PushOverlay()</strong></em> will push the layers into the layerstack and call their <em><strong>OnAttach()</strong></em> functons;</li>
+<li><em><strong>OnEvent()</strong></em> dispatches the events passed in to <em><strong>OnWindowClose()</strong></em> and <em><strong>OnWindowResize()</strong></em>; Then it would iterate through the layerstack <em><strong>from back to front</strong></em> to call each layer’s OnEvent() function;<ul>
+<li><em><strong>The order of layers</strong></em> in the layerstack determines <em><strong>the rendering order</strong></em>. But <em><strong>the logic order of layers is reversed from their rendering order</strong></em>. When we click a certain position on the screen, if there is a debug button, we definitely don’t want the in-game UI below to be clicked, and we also don’t want the character to make an attack action. Therefore, we need to reverse the rendering order and check whether each Layer can respond to this event. And decide whether to consume this event base on the behavior of the corresponding response (whether to stop here, or continue to the next Layer to respond)</li>
+</ul>
+</li>
+<li>By using the bool <em><strong>m_Minimized</strong></em>, we could stop updating the window when it is minimized.</li>
+</ul>
+<h4 id="Engine-h"><a href="#Engine-h" class="headerlink" title="Engine.h"></a>Engine.h</h4><p>Inside Engine.h, we have to add some include command in order to expose our systems to the game application. The file would be like this:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Application/Application.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Log/Log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Layer/Layer.h&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Application-End"><a href="#Application-End" class="headerlink" title="Application End"></a>Application End</h3><p>Then, we could use these system in our game application:</p>
+<h4 id="TestLayer-h-x2F-cpp"><a href="#TestLayer-h-x2F-cpp" class="headerlink" title="TestLayer.h&#x2F;.cpp"></a>TestLayer.h&#x2F;.cpp</h4><p>To start our game application, we need to create a layer for our game. In <em><strong>Game&#x2F;src&#x2F;…</strong></em> folder, create <em><strong>TestLayer.h&#x2F;.cpp&#x2F;</strong></em> and enter:</p>
+<p>TestLayer.h:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Engine.h&gt;</span></span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TestLayer</span> : <span class="hljs-keyword">public</span> Illusion::Layer<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">TestLayer</span>();<br>	<span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">TestLayer</span>() = <span class="hljs-keyword">default</span>;<br><br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">OnAttach</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;<br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">OnDetach</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OnUpdate</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;<br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">OnEvent</span><span class="hljs-params">(Illusion::Event&amp; event)</span> <span class="hljs-keyword">override</span></span>;<br>&#125;;<br><br><br></code></pre></td></tr></table></figure>
+
+<p>TestLayer.cpp:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;TestLayer.h&quot;</span></span><br>TestLayer::<span class="hljs-built_in">TestLayer</span>()<br>	:<span class="hljs-built_in">Layer</span>(<span class="hljs-string">&quot;TestLayer&quot;</span>), <span class="hljs-built_in">m_CameraController</span>(<span class="hljs-number">2560.0f</span> / <span class="hljs-number">1440.0f</span>, <span class="hljs-literal">true</span>)<br>&#123;&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TestLayer::OnAttach</span><span class="hljs-params">()</span> </span>&#123;&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TestLayer::OnDetach</span><span class="hljs-params">()</span> </span>&#123;&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TestLayer::OnUpdate</span><span class="hljs-params">(Illusion::Timestep timestep)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-comment">// Render</span><br>	<span class="hljs-comment">// Set the clear color</span><br>	<span class="hljs-comment">// Clear the color buffer with the clear color</span><br>    <span class="hljs-built_in">glClearColor</span>(<span class="hljs-number">0.3f</span>, <span class="hljs-number">0.3f</span>, <span class="hljs-number">0.3f</span>, <span class="hljs-number">1.0f</span>);<br>	<span class="hljs-built_in">glClear</span>(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">TestLayer::OnEvent</span><span class="hljs-params">(Illusion::Event&amp; event)</span> </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>The <em><strong>TestLayer</strong></em> class inherites from <em><strong>Layer</strong></em> class;</li>
+<li>Currently we have nothing to do in OnAttach(), OnDetach(), and OnEvent() functons;</li>
+<li><em><strong>OnUpdate()</strong></em> function would set a color that would be used to refresh the background of the window, and <em><strong>glClear()</strong></em> would clear the buffer with that color.</li>
+</ul>
+<h4 id="Game-cpp"><a href="#Game-cpp" class="headerlink" title="Game.cpp"></a>Game.cpp</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Engine.h&gt;</span></span><br> <span class="hljs-comment">//--------------------Entry point for the application--------------------</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Engine/Core/EntryPoint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;TestLayer.h&quot;</span></span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Game</span> : <span class="hljs-keyword">public</span> Illusion::Application<br>&#123;<br><span class="hljs-keyword">public</span>:<br>	<span class="hljs-built_in">Game</span>()<br>	&#123;<br>		<span class="hljs-comment">//PushLayer(new GameLayer());</span><br>		<span class="hljs-built_in">PushLayer</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">TestLayer</span>());<br>	&#125;<br>	~<span class="hljs-built_in">Game</span>() &#123;&#125;<br>&#125;;<br><span class="hljs-comment">//The Creation function for the Game Application</span><br><span class="hljs-function">Illusion::Application* <span class="hljs-title">Illusion::CreateApplication</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Game</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Here we create an instance of the TestLayer and push it into the layerstack so the application could update it automatically.</li>
+</ul>
+<hr>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>So far, we have finished the implementation of our first window and the utilization of the event system and layer system. Next step, we are going to create several helper classes such as a class that would generate a debugging window, a class that could set the update rate fixed, a class that could process the input, etc.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Game-Engine/" class="category-chain-item">Game Engine</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Original/">#Original</a>
+      
+        <a href="/tags/C/">#C++</a>
+      
+        <a href="/tags/Game-Development/">#Game Development</a>
+      
+        <a href="/tags/Computer-Graphics/">#Computer Graphics</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Illusion Engine 06 - Window</div>
+      <div>https://rigel.github.io/Window/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Rigel</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 21, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/WaldenReflect/" title="The Quest for Tranquility and Satisfaction - Reflecting on Thoreau">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">The Quest for Tranquility and Satisfaction - Reflecting on Thoreau</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/LayerSystem/" title="Illusion Engine 05 - Layer System">
+                        <span class="hidden-mobile">Illusion Engine 05 - Layer System</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/particle.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
