@@ -16,21 +16,23 @@
   <meta name="author" content="Rigel">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是摘要">
+    <meta name="description" content="Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to create and manipulate game assets, such as characters, levels,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Illusion Engine 07 - ImGui">
 <meta property="og:url" content="https://rigel.github.io/ImGui/index.html">
 <meta property="og:site_name" content="Rigel Blog">
-<meta property="og:description" content="这是摘要">
+<meta property="og:description" content="Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to create and manipulate game assets, such as characters, levels,">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-08-20T16:30:27.000Z">
-<meta property="article:modified_time" content="2023-02-12T23:55:46.740Z">
+<meta property="og:image" content="https://rigel.github.io/ImGui/Demo.png">
+<meta property="article:published_time" content="2022-08-24T16:30:27.000Z">
+<meta property="article:modified_time" content="2023-02-14T23:46:34.660Z">
 <meta property="article:author" content="Rigel">
 <meta property="article:tag" content="Original">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Game Development">
 <meta property="article:tag" content="Computer Graphics">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rigel.github.io/ImGui/Demo.png">
   
   
   
@@ -240,8 +242,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-08-20 12:30" pubdate>
-          August 20, 2022 pm
+        <time datetime="2022-08-24 12:30" pubdate>
+          August 24, 2022 pm
         </time>
       </span>
     
@@ -252,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          36 words
+          6.6k words
         
       </span>
     
@@ -263,7 +265,7 @@
         
         
         
-          1 mins
+          19 mins
         
       </span>
     
@@ -314,9 +316,53 @@
             
               <div class="markdown-body">
                 
-                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><hr>
-<h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><hr>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2>
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to <strong>create and manipulate game assets</strong>, such as characters, levels, and environments, <strong>without having to write code</strong>. The editor acts as a central hub for all of the game’s content and assets, making it easier for developers to collaborate and experiment with different ideas. Additionally, the use of an editor can significantly <strong>speed up the game development process</strong>.</p>
+<p>In order to create an editor in our engine, we choose to use ImGui library to write various windows of the editor. ImGui library has already been included in <em><strong>Illusion&#x2F;Lib&#x2F;imgui…</strong></em> folder and configured in <strong>premake.lua</strong> file. (The configuration of third-party library is in article <a target="_blank" rel="noopener" href="https://rigellm.github.io/Preparation/">Preparation</a>)</p>
+<hr>
+<h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><p>Essentially, we want to create an editor interface that <strong>does not logically belong to the content of the gameplay level</strong>, instead it belongs to the debug level, so we want it to be rendered at the end. The <strong>Overlay Layer</strong> mentioned above can just meet this requirement. Therefore, we can first write an ImguiLayer, which is specially used to put Imgui-related rendering logic.</p>
+<p>Before we actually code the ImGuiLayer class, we have to define a macro to enable ImGui. To make the header file clearly, we put the defination of this macro in a single cpp file. Thus, Inside <em><strong>Illusion&#x2F;src&#x2F;Engine&#x2F;ImGui&#x2F;…</strong></em> folder, create a file called <em><strong>ImGuiBuild.cpp</strong></em> and enter:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> IMGUI_IMPL_OPENGL_LOADER_GLAD</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;examples/imgui_impl_opengl3.cpp&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>After that, we are supposed to use ImGui library as usual. Inside the same folder, create two files <em><strong>ImGuiLayer.h&#x2F;.cpp</strong></em>, and enter:</p>
+<p>ImGuiLayer.h:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Layer/Layer.h&quot;</span></span><br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">ImGuiLayer</span> : <span class="hljs-keyword">public</span> Layer<br>	&#123;<br>	<span class="hljs-keyword">public</span>:<br>		<span class="hljs-built_in">ImGuiLayer</span>();<br>		~<span class="hljs-built_in">ImGuiLayer</span>();<br><br>		<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">OnAttach</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;<br>		<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">OnDetach</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;<br><br>		<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">OnImGuiRender</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span></span>;<br><br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Begin</span><span class="hljs-params">()</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">End</span><span class="hljs-params">()</span></span>;<br>	&#125;;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>ImGuiLayer is inherited from <strong>Layer</strong> Class so that it could be pushed into the layerstack and be updated and rendered as overlay layers.</li>
+</ul>
+<p>ImGuiLayer.cpp:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;ImGuiLayer.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;imgui.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;examples/imgui_impl_glfw.cpp&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;examples/imgui_impl_opengl3.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Application/Application.h&quot;</span></span><br><br><span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br><br>	ImGuiLayer::<span class="hljs-built_in">ImGuiLayer</span>()<br>		: <span class="hljs-built_in">Layer</span>(<span class="hljs-string">&quot;ImGuiLayer&quot;</span>)<br>	&#123; &#125;<br><br>	ImGuiLayer::~<span class="hljs-built_in">ImGuiLayer</span>() &#123; &#125;<br><br>	<span class="hljs-comment">// Call when it is put into the layerstack</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ImGuiLayer::OnAttach</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-comment">//Set up the ImGui context</span><br>		<span class="hljs-built_in">IMGUI_CHECKVERSION</span>();<br>		ImGui::<span class="hljs-built_in">CreateContext</span>();<br>		ImGuiIO&amp; io = ImGui::<span class="hljs-built_in">GetIO</span>(); (<span class="hljs-type">void</span>)io;<br>		<span class="hljs-comment">// Enable keyboard controls</span><br>		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;<br>		<span class="hljs-comment">// Enable docking</span><br>		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;<br>		<span class="hljs-comment">// Enable Multi_Viewports</span><br>		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;<br>		<br>		<span class="hljs-comment">// Set up ImGui Style</span><br>		ImGui::<span class="hljs-built_in">StyleColorsLight</span>();<br>		<span class="hljs-comment">//ImGui::StyleColorsDark();</span><br><br>		<span class="hljs-comment">// When viewports are enabled, tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.</span><br>		ImGuiStyle&amp; style = ImGui::<span class="hljs-built_in">GetStyle</span>();<br>		<span class="hljs-keyword">if</span> (io.ConfigFlags &amp; ImGuiConfigFlags_ViewportsEnable)<br>		&#123;<br>			style.WindowRounding = <span class="hljs-number">0.0f</span>;<br>			style.Colors[ImGuiCol_WindowBg].w = <span class="hljs-number">1.0f</span>;<br>		&#125;<br><br>		<span class="hljs-comment">// Setup Platform/Renderer bindings</span><br>		Application&amp; app = Application::<span class="hljs-built_in">Get</span>();<br>		GLFWwindow* window = <span class="hljs-built_in">static_cast</span>&lt;GLFWwindow*&gt;(app.<span class="hljs-built_in">GetWindow</span>().<span class="hljs-built_in">GetNativeWindow</span>());<br><br>		<span class="hljs-comment">// Initialize the implementation of OpenGL3</span><br>		<span class="hljs-built_in">ImGui_ImplGlfw_InitForOpenGL</span>(window, <span class="hljs-literal">true</span>);<br>		<span class="hljs-built_in">ImGui_ImplOpenGL3_Init</span>(<span class="hljs-string">&quot;#version 410&quot;</span>);<br>	&#125;<br><br>	<span class="hljs-comment">// Call when it is taken from the layerstack</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ImGuiLayer::OnDetach</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-built_in">ImGui_ImplOpenGL3_Shutdown</span>();<br>		<span class="hljs-built_in">ImGui_ImplGlfw_Shutdown</span>();<br>		ImGui::<span class="hljs-built_in">DestroyContext</span>();<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ImGuiLayer::Begin</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-built_in">ImGui_ImplOpenGL3_NewFrame</span>();<br>		<span class="hljs-built_in">ImGui_ImplGlfw_NewFrame</span>();<br>		ImGui::<span class="hljs-built_in">NewFrame</span>();<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ImGuiLayer::End</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		ImGuiIO&amp; io = ImGui::<span class="hljs-built_in">GetIO</span>();<br>		Application&amp; app = Application::<span class="hljs-built_in">Get</span>();<br>		io.DisplaySize = <span class="hljs-built_in">ImVec2</span>((<span class="hljs-type">float</span>)app.<span class="hljs-built_in">GetWindow</span>().<span class="hljs-built_in">GetWidth</span>(), (<span class="hljs-type">float</span>)app.<span class="hljs-built_in">GetWindow</span>().<span class="hljs-built_in">GetHeight</span>());<br><br>		<span class="hljs-comment">// RENDERING</span><br>		ImGui::<span class="hljs-built_in">Render</span>();<br>		<span class="hljs-built_in">ImGui_ImplOpenGL3_RenderDrawData</span>(ImGui::<span class="hljs-built_in">GetDrawData</span>());<br><br>		<span class="hljs-keyword">if</span> (io.ConfigFlags &amp; ImGuiConfigFlags_ViewportsEnable)<br>		&#123;<br>			GLFWwindow* backup_current_context = <span class="hljs-built_in">glfwGetCurrentContext</span>();<br>			ImGui::<span class="hljs-built_in">UpdatePlatformWindows</span>();<br>			ImGui::<span class="hljs-built_in">RenderPlatformWindowsDefault</span>();<br>			<span class="hljs-built_in">glfwMakeContextCurrent</span>(backup_current_context);<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ImGuiLayer::OnImGuiRender</span><span class="hljs-params">()</span> </span>&#123; &#125;<br><span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>OnAttach()</strong> function basically just sets up the render environment for ImGui.</li>
+<li><strong>Begin()</strong> and <strong>End()</strong> controls the rendering environment for ImGui. We can <strong>submit data</strong> after Begin() and the ImGui windows would be rendered by calling End();</li>
+<li><strong>OnImGuiRender()</strong> is where we <strong>bind and update everything that is related to the editor or debug windows</strong>. It would be called between Begin() and End().<ul>
+<li>OnImGuiRender() exists in every layer. The purpose of that is to make sure all layers are able to <strong>render their own debug window</strong>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Utilization"><a href="#Utilization" class="headerlink" title="Utilization"></a>Utilization</h2><p>In order to put ImGuiLayer into use, we have to revise our <em><strong>Application</strong></em> class:</p>
+<p>Application.h:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C++">...<br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/ImGui/ImGuiLayer.h&quot;</span></span><br>...<br><span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span><br>	&#123;<br>    ...<br>	<span class="hljs-keyword">private</span>:<br>        ...<br>		ImGuiLayer* m_ImGuiLayer;<br>        ...<br>	&#125;;<br>...<br><span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Here we include the ImGuiLayer class into our engine and then create a <strong>pointer</strong> that stores our ImGuiLayer.</li>
+</ul>
+<p>Application.cpp:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs C++">...<br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br>    ...<br>    Application::<span class="hljs-built_in">Application</span>()<br>	&#123;<br>        ...<br>		m_ImGuiLayer = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ImGuiLayer</span>();<br>		<span class="hljs-built_in">PushOverlay</span>(m_ImGuiLayer);<br>	&#125;<br>    ...<br>	<span class="hljs-comment">//The function where the app actually starts</span><br>	<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Application::Run</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">while</span> (m_Running)<br>		&#123;<br>            ...<br>			<span class="hljs-comment">// Render all ImGui windows</span><br>			m_ImGuiLayer-&gt;<span class="hljs-built_in">Begin</span>();<br>			<span class="hljs-keyword">for</span> (Layer* layer : m_LayerStack)<br>				layer-&gt;<span class="hljs-built_in">OnImGuiRender</span>();<br>			m_ImGuiLayer-&gt;<span class="hljs-built_in">End</span>();<br>            ...<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>In the <strong>constructor of Application</strong>, we create an instance of ImGuiLayer and push it into the layerstack;</li>
+<li>In <strong>Run()</strong> function, we render all the ImGui related window at once by going throught the layerstack and call <strong>every layers’ OnImGuiRender()</strong> function.</li>
+</ul>
+<hr>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>For now, we create a class that enables us to build our own editor in the engine. Temporarily, we can add some code in <strong>ImGuiLayer’s OnImGuiRender()</strong> function to see the effect:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ImGuiLayer::OnImGuiRender</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">bool</span> show = <span class="hljs-literal">true</span>;<br>	ImGui::<span class="hljs-built_in">ShowDemoWindow</span>(&amp;show);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>By using such code, a demo window that demonstrates all basic features of ImGui would be rendered</p>
+<p><img src="/ImGui/Demo.png" srcset="/img/loading.gif" lazyload alt="Demo Window"></p>
+
                 
               </div>
             
@@ -380,7 +426,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>August 20, 2022</div>
+          <div>August 24, 2022</div>
         </div>
       
       
@@ -407,6 +453,29 @@
 
 
 
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/WaldenReflect/" title="The Quest for Tranquility and Satisfaction - Reflecting on Thoreau">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">The Quest for Tranquility and Satisfaction - Reflecting on Thoreau</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Window/" title="Illusion Engine 06 - Window">
+                        <span class="hidden-mobile">Illusion Engine 06 - Window</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
 
