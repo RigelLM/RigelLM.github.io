@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>Houdini Note 01 - Introduction</title>
+    <link href="/HoudiniNote-1/"/>
+    <url>/HoudiniNote-1/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Hotkeys"><a href="#Hotkeys" class="headerlink" title="Hotkeys"></a>Hotkeys</h2><ol><li>Camera Movement: Alt + Mouse<ol><li>Alt + LeftMouseButton &#x3D; Rotation of Camera</li><li>Alt + RightMouseButton &#x3D; Zoom In and Out</li><li>Alt + MiddleMouseButton &#x3D; Translation of Camera</li></ol></li><li>Move Object to an appropriate view position: Space + G</li><li>Disconnect Lines in the Network Editor:<ol><li>Y + LeftMouseButton</li><li>RightMouseButton and select “Disconnect”</li><li>LeftMouseButton + Del</li></ol></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Houdini Notes</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Original</tag>
+      
+      <tag>Houdini</tag>
+      
+      <tag>VFX</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>The Quest for Tranquility and Satisfaction - Reflecting on Thoreau</title>
     <link href="/WaldenReflect/"/>
     <url>/WaldenReflect/</url>
