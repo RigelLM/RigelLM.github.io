@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/Rigel.png">
+  <link rel="icon" href="/img/Rigel.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Rigel">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Default ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Illusion Engine 08 - Input">
+<meta property="og:url" content="https://rigel.github.io/Input/index.html">
+<meta property="og:site_name" content="Rigel Blog">
+<meta property="og:description" content="Default ...">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-08-30T05:18:07.000Z">
+<meta property="article:modified_time" content="2023-04-20T02:59:23.876Z">
+<meta property="article:author" content="Rigel">
+<meta property="article:tag" content="Original">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Game Development">
+<meta property="article:tag" content="Computer Graphics">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Illusion Engine 08 - Input - Rigel Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"rigel.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZgzmD6Hm82vvDfnkCgGAcZhI-gzGzoHsz","app_key":"RPnpqTBjC8oNMLXr2F7RdvB2","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Rigel Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/banner2.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Illusion Engine 08 - Input"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-30 01:18" pubdate>
+          August 30, 2022 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> times
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Illusion Engine 08 - Input</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><p>Input.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Core.h&quot;</span></span><br><br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br><br>	<span class="hljs-keyword">class</span> <span class="hljs-title class_">Input</span><br>	&#123;<br><br>	<span class="hljs-keyword">public</span>:<br><br>		<span class="hljs-comment">// Static methods that could be used outside of this class</span><br>		<span class="hljs-comment">// Call the virtual function that would be implemented in the inhirated class</span><br>		<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title">IsKeyPressed</span><span class="hljs-params">(<span class="hljs-type">int</span> keycode)</span></span>;<br><br>		<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title">IsMouseButtonPressed</span><span class="hljs-params">(<span class="hljs-type">int</span> button)</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">static</span> std::pair&lt;<span class="hljs-type">float</span>, <span class="hljs-type">float</span>&gt; <span class="hljs-title">GetMousePosition</span><span class="hljs-params">()</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">float</span> <span class="hljs-title">GetMouseX</span><span class="hljs-params">()</span></span>;<br>		<span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">float</span> <span class="hljs-title">GetMouseY</span><span class="hljs-params">()</span></span>;<br><br>	&#125;;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br><br> <span class="hljs-comment">//----------------------- Key Codes -----------------------</span><br><br> <span class="hljs-comment">/* Printable keys */</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_SPACE              32</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_APOSTROPHE         39  <span class="hljs-comment">/* &#x27; */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_COMMA              44  <span class="hljs-comment">/* , */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_MINUS              45  <span class="hljs-comment">/* - */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_PERIOD             46  <span class="hljs-comment">/* . */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_SLASH              47  <span class="hljs-comment">/* / */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_0                  48</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_1                  49</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_2                  50</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_3                  51</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_4                  52</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_5                  53</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_6                  54</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_7                  55</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_8                  56</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_9                  57</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_SEMICOLON          59  <span class="hljs-comment">/* ; */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_EQUAL              61  <span class="hljs-comment">/* = */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_A                  65</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_B                  66</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_C                  67</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_D                  68</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_E                  69</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F                  70</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_G                  71</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_H                  72</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_I                  73</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_J                  74</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_K                  75</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_L                  76</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_M                  77</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_N                  78</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_O                  79</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_P                  80</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_Q                  81</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_R                  82</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_S                  83</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_T                  84</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_U                  85</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_V                  86</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_W                  87</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_X                  88</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_Y                  89</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_Z                  90</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_LEFT_BRACKET       91  <span class="hljs-comment">/* [ */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_BACKSLASH          92  <span class="hljs-comment">/* \ */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_RIGHT_BRACKET      93  <span class="hljs-comment">/* ] */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_GRAVE_ACCENT       96  <span class="hljs-comment">/* ` */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_WORLD_1            161 <span class="hljs-comment">/* non-US #1 */</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_WORLD_2            162 <span class="hljs-comment">/* non-US #2 */</span></span><br><br><span class="hljs-comment">/* Function keys */</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_ESCAPE             256</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_ENTER              257</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_TAB                258</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_BACKSPACE          259</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_INSERT             260</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_DELETE             261</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_RIGHT              262</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_LEFT               263</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_DOWN               264</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_UP                 265</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_PAGE_UP            266</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_PAGE_DOWN          267</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_HOME               268</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_END                269</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_CAPS_LOCK          280</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_SCROLL_LOCK        281</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_NUM_LOCK           282</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_PRINT_SCREEN       283</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_PAUSE              284</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F1                 290</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F2                 291</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F3                 292</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F4                 293</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F5                 294</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F6                 295</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F7                 296</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F8                 297</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F9                 298</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F10                299</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F11                300</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F12                301</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F13                302</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F14                303</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F15                304</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F16                305</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F17                306</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F18                307</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F19                308</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F20                309</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F21                310</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F22                311</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F23                312</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F24                313</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_F25                314</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_0               320</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_1               321</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_2               322</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_3               323</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_4               324</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_5               325</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_6               326</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_7               327</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_8               328</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_9               329</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_DECIMAL         330</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_DIVIDE          331</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_MULTIPLY        332</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_SUBTRACT        333</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_ADD             334</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_ENTER           335</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_KP_EQUAL           336</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_LEFT_SHIFT         340</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_LEFT_CONTROL       341</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_LEFT_ALT           342</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_LEFT_SUPER         343</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_RIGHT_SHIFT        344</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_RIGHT_CONTROL      345</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_RIGHT_ALT          346</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_RIGHT_SUPER        347</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_KEY_MENU               348</span><br><br><span class="hljs-comment">//----------------------- Key Codes -----------------------</span><br><br><span class="hljs-comment">//------------------ Mouse Button Codes -------------------</span><br><br> <span class="hljs-comment">// Mouse Button Code</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_1         0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_2         1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_3         2</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_4         3</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_5         4</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_6         5</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_7         6</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_8         7</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_LAST      ILLUSION_MOUSE_BUTTON_8</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_LEFT      ILLUSION_MOUSE_BUTTON_1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_RIGHT     ILLUSION_MOUSE_BUTTON_2</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ILLUSION_MOUSE_BUTTON_MIDDLE    ILLUSION_MOUSE_BUTTON_3</span><br><br><span class="hljs-comment">//------------------ Mouse Button Codes -------------------</span><br></code></pre></td></tr></table></figure>
+
+<p>Input.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Input.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Engine/Core/Application/Application.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;GLFW/glfw3.h&gt;</span></span><br><br> <span class="hljs-comment">//--------------------namespace: Illusion starts--------------------</span><br><br><span class="hljs-keyword">namespace</span> Illusion<br>&#123;<br><br>	<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Input::IsKeyPressed</span><span class="hljs-params">(<span class="hljs-type">int</span> keycode)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">auto</span> window = Application::<span class="hljs-built_in">Get</span>().<span class="hljs-built_in">GetWindow</span>().<span class="hljs-built_in">GetNativeWindow</span>();<br>		<span class="hljs-keyword">auto</span> state = <span class="hljs-built_in">glfwGetKey</span>(window, keycode);<br>		<span class="hljs-keyword">return</span> state == GLFW_PRESS || state == GLFW_REPEAT;<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">Input::IsMouseButtonPressed</span><span class="hljs-params">(<span class="hljs-type">int</span> button)</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">auto</span> window = Application::<span class="hljs-built_in">Get</span>().<span class="hljs-built_in">GetWindow</span>().<span class="hljs-built_in">GetNativeWindow</span>();<br>		<span class="hljs-keyword">auto</span> state = <span class="hljs-built_in">glfwGetMouseButton</span>(window, button);<br>		<span class="hljs-keyword">return</span> state == GLFW_PRESS;<br>	&#125;<br><br>	<span class="hljs-function">std::pair&lt;<span class="hljs-type">float</span>, <span class="hljs-type">float</span>&gt; <span class="hljs-title">Input::GetMousePosition</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">auto</span> window = Application::<span class="hljs-built_in">Get</span>().<span class="hljs-built_in">GetWindow</span>().<span class="hljs-built_in">GetNativeWindow</span>();<br>		<span class="hljs-type">double</span> xpos, ypos;<br>		<span class="hljs-built_in">glfwGetCursorPos</span>(window, &amp;xpos, &amp;ypos);<br>		<span class="hljs-keyword">return</span> &#123; (<span class="hljs-type">float</span>)xpos, (<span class="hljs-type">float</span>)ypos &#125;;<br><br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Input::GetMouseX</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">auto</span> [x, y] = <span class="hljs-built_in">GetMousePosition</span>();<br>		<span class="hljs-keyword">return</span> x;<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Input::GetMouseY</span><span class="hljs-params">()</span></span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">auto</span> [x, y] = <span class="hljs-built_in">GetMousePosition</span>();<br>		<span class="hljs-keyword">return</span> y;<br>	&#125;<br>	<span class="hljs-comment">//--------------------namespace: Illusion ends--------------------</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Utilization"><a href="#Utilization" class="headerlink" title="Utilization"></a>Utilization</h2><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Original/">#Original</a>
+      
+        <a href="/tags/C/">#C++</a>
+      
+        <a href="/tags/Game-Development/">#Game Development</a>
+      
+        <a href="/tags/Computer-Graphics/">#Computer Graphics</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Illusion Engine 08 - Input</div>
+      <div>https://rigel.github.io/Input/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Rigel</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 30, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/particle.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
