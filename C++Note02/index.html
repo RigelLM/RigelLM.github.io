@@ -24,7 +24,7 @@
 <meta property="og:description" content="SFINAE is the abbreviation of &quot;substitution ...">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-10-07T22:50:10.000Z">
-<meta property="article:modified_time" content="2023-10-08T01:29:37.492Z">
+<meta property="article:modified_time" content="2023-10-08T01:43:36.090Z">
 <meta property="article:author" content="Rigel">
 <meta property="article:tag" content="Original">
 <meta property="article:tag" content="C++">
@@ -251,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.3k words
+          4.4k words
         
       </span>
     
@@ -262,7 +262,7 @@
         
         
         
-          12 mins
+          13 mins
         
       </span>
     
@@ -358,7 +358,7 @@
 
 <p>The former is a regular version of a template class, and the latter is a partial specialization version of a template class.</p>
 <p>In that case, <strong>std::enable_if&lt;true, T&gt;::type</strong> would be <em>T</em>, and &amp;<strong>std::enable_if&lt;false, T&gt;::type</strong> would cause a <em>compile error</em>. (under SFINAE, the compiler will not consider functions&#x2F;classes containing this kind of enable_if as a candidate)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">true</span>, <span class="hljs-type">int</span>&gt;::type t;     <span class="hljs-comment">// correct, equals to : int t;</span><br><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">true</span>&gt;::type;            <span class="hljs-comment">// correct, equals to : void;</span><br><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">false</span>&gt;::type;           <span class="hljs-comment">// failed, there&#x27;s no defination for type</span><br><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">false</span>, <span class="hljs-type">int</span>&gt;:: type t2;  <span class="hljs-comment">// failed, same as above</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">true</span>, <span class="hljs-type">int</span>&gt;::type t;     <span class="hljs-comment">// correct, equals to : int t;</span><br><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">true</span>&gt;::type;            <span class="hljs-comment">// correct, equals to : void;</span><br><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">false</span>&gt;::type;           <span class="hljs-comment">// failed, there&#x27;s no definition for type</span><br><span class="hljs-keyword">typename</span> std::enable_if&lt;<span class="hljs-literal">false</span>, <span class="hljs-type">int</span>&gt;:: type t2;  <span class="hljs-comment">// failed, same as above</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>std::enable_if could be used anywhere as a typename. It is pretty useful in C++ template meta progamming.</p>
 <ol>
@@ -372,7 +372,7 @@
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">typename</span> std::enable_if&lt;std::is_intergral&lt;T&gt;::value, <span class="hljs-type">bool</span>&gt;::<span class="hljs-function">type <span class="hljs-title">is_odd</span><span class="hljs-params">(T t)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">bool</span>(t % <span class="hljs-number">2</span>);<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> = <span class="hljs-keyword">typename</span> std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt;<br><span class="hljs-type">bool</span> <span class="hljs-built_in">is_even</span>(T t)<br>&#123;<br>    <span class="hljs-keyword">return</span> !<span class="hljs-built_in">is_odd</span>(t);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>In the example above, we are validating the template’s parameter type by defining the return value and the default template parameter.</p>
+<p>In the example above, we are validating the template’s parameter type by two ways: defining the <em>return value</em> and the <em>default template parameter</em>. By defining function like this, only <strong>intergral type</strong> can be used to call is_odd and is_even.</p>
 <hr>
 <h2 id="std-enable-if-t"><a href="#std-enable-if-t" class="headerlink" title="std::enable_if_t"></a>std::enable_if_t</h2><p>It is easy to understand std::enable_if_t with std::enable_t. Its definition is:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">bool</span> _Test, <span class="hljs-keyword">typename</span> _Ty = <span class="hljs-type">void</span>&gt;<br><span class="hljs-keyword">using</span> <span class="hljs-type">enable_if_t</span> = <span class="hljs-keyword">typename</span> enable_if&lt;_Test, _Ty&gt;::type;<br></code></pre></td></tr></table></figure>
