@@ -16,24 +16,27 @@
   <meta name="author" content="Rigel">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Hotkeys and shortcuts">
+    <meta name="description" content="Popd&#x2F;Pushd are usually used to change the directoy ...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Houdini Note 01 - Introduction">
-<meta property="og:url" content="https://rigel.github.io/HoudiniNote-1/index.html">
+<meta property="og:title" content="Bash Notes - Popd&#x2F;Pushd &amp; Return Value">
+<meta property="og:url" content="https://rigel.github.io/BashNote01/index.html">
 <meta property="og:site_name" content="Rigel Blog">
-<meta property="og:description" content="Hotkeys and shortcuts">
+<meta property="og:description" content="Popd&#x2F;Pushd are usually used to change the directoy ...">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-03-03T20:23:12.000Z">
-<meta property="article:modified_time" content="2023-06-06T02:13:57.425Z">
+<meta property="og:image" content="https://rigel.github.io/BashNote01/dirResult.png">
+<meta property="og:image" content="https://rigel.github.io/BashNote01/ReturnResult.png">
+<meta property="article:published_time" content="2022-07-31T20:29:02.000Z">
+<meta property="article:modified_time" content="2023-10-08T01:27:47.633Z">
 <meta property="article:author" content="Rigel">
 <meta property="article:tag" content="Original">
-<meta property="article:tag" content="Houdini">
-<meta property="article:tag" content="VFX">
+<meta property="article:tag" content="Bash">
+<meta property="article:tag" content="Windows">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rigel.github.io/BashNote01/dirResult.png">
   
   
   
-  <title>Houdini Note 01 - Introduction - Rigel Blog</title>
+  <title>Bash Notes - Popd/Pushd &amp; Return Value - Rigel Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -228,7 +231,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Houdini Note 01 - Introduction"></span>
+            <span id="subtitle" data-typed-text="Bash Notes - Popd/Pushd &amp; Return Value"></span>
           
         </div>
 
@@ -239,8 +242,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-03 15:23" pubdate>
-          March 3, 2023 pm
+        <time datetime="2022-07-31 16:29" pubdate>
+          July 31, 2022 pm
         </time>
       </span>
     
@@ -251,7 +254,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          308 words
+          1.3k words
         
       </span>
     
@@ -262,7 +265,7 @@
         
         
         
-          1 mins
+          4 mins
         
       </span>
     
@@ -308,26 +311,44 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Houdini Note 01 - Introduction</h1>
+            <h1 style="display: none">Bash Notes - Popd/Pushd &amp; Return Value</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="Hotkeys"><a href="#Hotkeys" class="headerlink" title="Hotkeys"></a>Hotkeys</h2><ol>
-<li>Camera Movement: Alt + Mouse<ol>
-<li>Alt + LeftMouseButton &#x3D; Rotation of Camera</li>
-<li>Alt + RightMouseButton &#x3D; Zoom In and Out</li>
-<li>Alt + MiddleMouseButton &#x3D; Translation of Camera</li>
-</ol>
+                <h2 id="Popd-x2F-Pushd"><a href="#Popd-x2F-Pushd" class="headerlink" title="Popd&#x2F;Pushd"></a>Popd&#x2F;Pushd</h2><p>These two commands are usually used to <strong>change the directoy</strong>.</p>
+<ul>
+<li><p>Pushd</p>
+<ul>
+<li>Move to a certain directory, and store the current directory at the <strong>top</strong> of a stack.</li>
+</ul>
 </li>
-<li>Move Object to an appropriate view position: Space + G</li>
-<li>Disconnect Lines in the Network Editor:<ol>
-<li>Y + LeftMouseButton</li>
-<li>RightMouseButton and select “Disconnect”</li>
-<li>LeftMouseButton + Del</li>
-</ol>
+<li><p>Popd</p>
+<ul>
+<li>Read the directory from the stack, move to it, and then delete the directory from the stack.</li>
+</ul>
 </li>
-</ol>
+</ul>
+<p>The <strong>first time</strong> using Pushd, the current directory would be stored at the bottom of the stack since the stack is empty. If the command is used again, another directory would be stored on top of the first directory.</p>
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">@<span class="hljs-built_in">echo</span> off<br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Intel\Logs <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\Download <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">pushd</span> C:\WINDOWS <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>% <br><span class="hljs-built_in">popd</span> <br>Echo current directory：%<span class="hljs-built_in">cd</span>%<br></code></pre></td></tr></table></figure>
+
+<p>Result:</p>
+<img src="/BashNote01/dirResult.png" srcset="/img/loading.gif" lazyload class="" title="Running Result">
+
+<hr>
+<h2 id="Return-Value"><a href="#Return-Value" class="headerlink" title="Return Value"></a>Return Value</h2><p>If we want to get the return value of a command and store it in a variable, usually we use the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> /f <span class="hljs-string">&quot;delims=&quot;</span> %%returnvalue <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;command&#x27;</span>) <span class="hljs-keyword">do</span> <span class="hljs-built_in">set</span> variable=%%returnvalue<br></code></pre></td></tr></table></figure>
+
+<p><em><strong>command</strong></em> represents the command which we want to get the return value from. <em><strong>variable</strong></em> is where we store the return value. <em><strong>returnvalue</strong></em> would be ultimately set to the return value of this command.</p>
+<p>To retrieve the value, we could use the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">%variable%<br></code></pre></td></tr></table></figure>
+
+<p>Example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">pushd</span> C:<br><span class="hljs-built_in">cd</span> Program Files (x86)\Microsoft Visual Studio\Installer<br><span class="hljs-keyword">for</span> /f <span class="hljs-string">&quot;delims=&quot;</span> %%t <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;vswhere.exe -property catalog_productLineVersion&#x27;</span>) <span class="hljs-keyword">do</span> <span class="hljs-built_in">set</span> version=%%t<br><span class="hljs-built_in">popd</span><br><span class="hljs-built_in">cd</span> ..\<br>call Lib\premake5\Premake5.exe vs%version%<br>PAUSE<br></code></pre></td></tr></table></figure>
+
+<p>Result:</p>
+<img src="/BashNote01/ReturnResult.png" srcset="/img/loading.gif" lazyload class="" title="Running Result">
 
                 
               </div>
@@ -346,7 +367,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Houdini-Notes/" class="category-chain-item">Houdini Notes</a>
+  <a href="/categories/Bash-Notes/" class="category-chain-item">Bash Notes</a>
   
   
 
@@ -363,9 +384,9 @@
       
         <a href="/tags/Original/">#Original</a>
       
-        <a href="/tags/Houdini/">#Houdini</a>
+        <a href="/tags/Bash/">#Bash</a>
       
-        <a href="/tags/VFX/">#VFX</a>
+        <a href="/tags/Windows/">#Windows</a>
       
     </div>
   
@@ -377,8 +398,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Houdini Note 01 - Introduction</div>
-      <div>https://rigel.github.io/HoudiniNote-1/</div>
+      <div>Bash Notes - Popd/Pushd &amp; Return Value</div>
+      <div>https://rigel.github.io/BashNote01/</div>
     </div>
     <div class="license-meta">
       
@@ -390,7 +411,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 3, 2023</div>
+          <div>July 31, 2022</div>
         </div>
       
       
@@ -422,12 +443,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/EntryPoint/" title="Illusion Engine 02 - EntryPoint">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Illusion Engine 02 - EntryPoint</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/WaldenReflect/" title="The Quest for Tranquility and Satisfaction - Reflecting on Thoreau">
-                        <span class="hidden-mobile">The Quest for Tranquility and Satisfaction - Reflecting on Thoreau</span>
+                      <a href="/Preparation/" title="Illusion Engine 01 - Preparation">
+                        <span class="hidden-mobile">Illusion Engine 01 - Preparation</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
