@@ -16,16 +16,16 @@
   <meta name="author" content="Rigel">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to create and manipulate game assets, such as characters, levels,">
+    <meta name="description" content="Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to create and manipulate game assets ...">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Illusion Engine 07 - ImGui">
 <meta property="og:url" content="https://rigel.github.io/ImGui/index.html">
 <meta property="og:site_name" content="Rigel Blog">
-<meta property="og:description" content="Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to create and manipulate game assets, such as characters, levels,">
+<meta property="og:description" content="Game engine editors play a crucial role in the development of video games. They provide a graphical user interface for game developers to create and manipulate game assets ...">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://rigel.github.io/ImGui/Demo.png">
 <meta property="article:published_time" content="2022-08-24T16:30:27.000Z">
-<meta property="article:modified_time" content="2023-06-06T02:14:00.910Z">
+<meta property="article:modified_time" content="2023-11-04T04:59:37.683Z">
 <meta property="article:author" content="Rigel">
 <meta property="article:tag" content="Original">
 <meta property="article:tag" content="C++">
@@ -336,10 +336,8 @@
 <ul>
 <li><strong>OnAttach()</strong> function basically just sets up the render environment for ImGui.</li>
 <li><strong>Begin()</strong> and <strong>End()</strong> controls the rendering environment for ImGui. We can <strong>submit data</strong> after Begin() and the ImGui windows would be rendered by calling End();</li>
-<li><strong>OnImGuiRender()</strong> is where we <strong>bind and update everything that is related to the editor or debug windows</strong>. It would be called between Begin() and End().<ul>
+<li><strong>OnImGuiRender()</strong> is where we <strong>bind and update everything that is related to the editor or debug windows</strong>. It would be called between Begin() and End().</li>
 <li>OnImGuiRender() exists in every layer. The purpose of that is to make sure all layers are able to <strong>render their own debug window</strong>.</li>
-</ul>
-</li>
 </ul>
 <hr>
 <h2 id="Utilization"><a href="#Utilization" class="headerlink" title="Utilization"></a>Utilization</h2><p>In order to put ImGuiLayer into use, we have to revise our <em><strong>Application</strong></em> class:</p>
